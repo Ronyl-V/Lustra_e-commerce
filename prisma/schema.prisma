@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id             Int      @id @default(autoincrement())
+  name           String
+  description    String
+  price          Float
+  quantity       Int
+  category       String?
+  status         Boolean  @default(true)
+  trackQuantity  Boolean  @default(true)
+  allowBackorder Boolean  @default(false)
+  image          String?
+  createdAt      DateTime @default(now())
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String            // numéro de téléphone du client
+  paymentMethod String            // méthode de paiement (Orange, Momo...)
+  total         Float
+  status        String   @default("Pending")
+  transactionId String @unique
+  createdAt     DateTime @default(now())
+  items         Item[]   @relation("OrderItems")
+}
+
+model Item {
+  id        String  @id @default(cuid())
+  productId Int
+  name      String
+  image     String?
+  price     Float
+  quantity  Int
+  orderId   String
+  order     Order   @relation("OrderItems", fields: [orderId], references: [id])
+}
+
