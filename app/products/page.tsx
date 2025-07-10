@@ -1,12 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Filter from '@/Components/Filter';
-import NavBar from "@/Components/NavBar";
-import Footer from "@/Components/Footer";
+import Filter from '@/components/Filter';
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { prisma } from '@/lib/prisma';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
-import ProductCard from '@/Components/ProductCard';
+import ProductCard from '@/components/ProductCard';
 
 type Props = {
   searchParams?: {

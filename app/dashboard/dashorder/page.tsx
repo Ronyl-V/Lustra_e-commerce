@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/Components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { Badge } from "@/Components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { Bell, Settings, ChevronDown, X } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

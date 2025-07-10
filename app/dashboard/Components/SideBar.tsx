@@ -21,7 +21,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
-} from "@/Components/ui/sidebar";
+} from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import NavLink from "@/app/dashboard/NavLink";
 import { useRouter } from "next/navigation";

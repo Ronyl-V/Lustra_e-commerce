@@ -1,11 +1,11 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MetricsCards } from "@/app/dashboard/Components/MetricsCards";
 import SideBar from "../Components/SideBar";
 import { RevenueChart } from "./RevenueChart";
 import ProductTable from "./ProductTable";
-import { Card } from "@/Components/ui/card";
+import { Card } from "@/components/ui/card";
 import React, { useState } from "react";
 
 const Index = () => {

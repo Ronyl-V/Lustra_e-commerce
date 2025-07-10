@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import Image from 'next/image';
-import NavBar from "@/Components/NavBar";
-import Footer from "@/Components/Footer";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 
 const Contact = () => {

@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import NavBar from "@/Components/NavBar";
-import Footer from "@/Components/Footer";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";

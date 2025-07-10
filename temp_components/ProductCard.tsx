@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import AddToCart from "@/Components/AddToCart";
+import AddToCart from "@/components/AddToCart";
 
 type Product = {
   id: number;

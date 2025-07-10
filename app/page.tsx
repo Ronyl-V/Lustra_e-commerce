@@ -1,7 +1,7 @@
 import React from 'react'
-import Slide from '@/Components/Slide'
-import NavBar from "@/Components/NavBar"
-import Footer from "@/Components/Footer"
+import Slide from '@/components/Slide'
+import NavBar from "@/components/NavBar"
+import Footer from "@/components/Footer"
 
 const HomePage = () => {
   return (

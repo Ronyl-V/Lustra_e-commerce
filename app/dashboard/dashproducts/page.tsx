@@ -3,7 +3,7 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import DashFilter from "@/app/dashboard/Components/DashFilter";
 import DashProductTable from "@/app/dashboard/Components/DashProductTable";
 import SearchBar from "../Components/SearchBar";

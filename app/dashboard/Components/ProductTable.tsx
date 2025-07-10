@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/Components/ui/table";
+} from "@/components/ui/table";
 
 const fetchProducts = async (params: string) => {
   const res = await axios.get(`/api/filterdashproducts?${params}`);

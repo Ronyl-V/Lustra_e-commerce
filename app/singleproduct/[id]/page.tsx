@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import NavBar from "@/Components/NavBar";
-import Footer from "@/Components/Footer";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { prisma } from '@/lib/prisma';
-import AddToCart from '@/Components/AddToCart';
-import AddQuantity from '@/Components/AddQuantity';
+import AddToCart from '@/components/AddToCart';
+import AddQuantity from '@/components/AddQuantity';
 
 interface SingleProductPageProps {
   params: {

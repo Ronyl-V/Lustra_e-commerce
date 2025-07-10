@@ -8,8 +8,8 @@ import {
   ShoppingCartIcon,
   BarChart3Icon,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Badge } from "@/Components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export const MetricsCards = () => {
   const [metrics, setMetrics] = useState<any>(null);

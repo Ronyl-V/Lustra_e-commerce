@@ -1,8 +1,8 @@
 "use client";
 import React from 'react'
 import Image from 'next/image'
-import NavBar from "@/Components/NavBar"
-import Footer from "@/Components/Footer"
+import NavBar from "@/components/NavBar"
+import Footer from "@/components/Footer"
 import { Award, CheckCircle, Shield, Star, Users } from 'lucide-react';
 import { useState } from 'react';
 

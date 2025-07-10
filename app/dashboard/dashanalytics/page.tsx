@@ -1,5 +1,5 @@
 "use client";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MetricsCards } from "@/app/dashboard/Components/MetricsCards";
 import { RevenueChart } from "@/app/dashboard/Components/RevenueChart";
 import SideBar from "../Components/SideBar";
