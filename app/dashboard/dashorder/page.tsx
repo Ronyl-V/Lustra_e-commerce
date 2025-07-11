@@ -51,11 +51,9 @@ const DashOrder = () => {
   useEffect(() => {
     fetch("/api/get-orders")
       .then((res) => res.json())
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((data: any[]) => {
         if (!Array.isArray(data)) return;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const formatted = data.map((order: any) => ({
           id: "#" + order.id,
           name: order.name,
@@ -69,7 +67,6 @@ const DashOrder = () => {
           price: `${order.total}FCFA`,
           status: order.status,
           statusColor: statusToColor(order.status),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           products: order.items.map((i: any) => ({
             id: i.productId,
             name: i.name,
@@ -79,8 +76,8 @@ const DashOrder = () => {
 
         setOrders(formatted);
       })
-      .catch((_error) => {
-        console.error(_error);
+      .catch((error) => {
+        console.error(error);
       });
   }, []);
 
@@ -116,7 +113,7 @@ const DashOrder = () => {
       setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
       setSelectedOrder(updated);
       setTempStatus(newStatus);
-    } catch (error) {
+    } catch {
       alert("Erreur lors de la mise à jour du statut");
     }
   };
@@ -139,12 +136,9 @@ const DashOrder = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar fixe */}
       <SideBar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
 
-      {/* Contenu principal */}
       <div className="flex-1">
-        {/* HEADER */}
         <div className="bg-white border-b px-6 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-semibold">Orders</h1>
@@ -161,7 +155,6 @@ const DashOrder = () => {
           </div>
         </div>
 
-        {/* FILTERS */}
         <div className="flex justify-between items-center px-6 py-4">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList>
@@ -172,7 +165,6 @@ const DashOrder = () => {
             </TabsList>
           </Tabs>
 
-          {/* Calendars */}
           <div className="flex space-x-2 items-center text-sm text-gray-500">
             <DatePicker
               selected={startDate}
@@ -199,7 +191,6 @@ const DashOrder = () => {
           </div>
         </div>
 
-        {/* TABLE */}
         <Card className="mx-6">
           <table className="w-full text-sm">
             <thead>
@@ -240,7 +231,6 @@ const DashOrder = () => {
           </table>
         </Card>
 
-        {/* PAGINATION */}
         <div className="flex justify-center space-x-2 mt-6">
           {Array.from({ length: totalPages }).map((_, i) => (
             <Button
@@ -254,7 +244,6 @@ const DashOrder = () => {
           ))}
         </div>
 
-        {/* MODAL */}
         {selectedOrder && (
           <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
             <div className="bg-white w-[90%] md:w-[60%] rounded-lg shadow-lg p-6 relative">

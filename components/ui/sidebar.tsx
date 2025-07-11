@@ -1,14 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const SidebarContext = createContext<{ state: "expanded" | "collapsed" }>({ state: "expanded" });
 
 export const Sidebar = ({ className, children }: { className?: string; children: ReactNode }) => {
-  return (
-    <aside className={cn("w-64 h-screen", className)}>{children}</aside>
-  );
+  return <aside className={cn("w-64 h-screen", className)}>{children}</aside>;
 };
 
 export const SidebarHeader = ({ className = "", children }: { className?: string; children: ReactNode }) => (
@@ -33,11 +31,9 @@ export const SidebarMenuItem = ({ children }: { children: ReactNode }) => <li>{c
 export const SidebarMenuButton = ({
   children,
   isActive,
-  asChild = false,
 }: {
   children: ReactNode;
   isActive?: boolean;
-  asChild?: boolean;
 }) => {
   return (
     <div

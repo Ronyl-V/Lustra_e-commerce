@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 
-export const dynamic = "force-dynamic"; // rendre la page dynamique
+export const dynamic = "force-dynamic";
 
 type Product = NonNullable<Awaited<ReturnType<typeof prisma.product.findFirst>>>;
 
@@ -17,10 +17,8 @@ export default async function ProductsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  // On attend la résolution de searchParams
   const params = await searchParams;
 
-  // Fonction utilitaire pour récupérer une valeur unique
   const getParam = (key: string) => {
     const value = params[key];
     return Array.isArray(value) ? value[0] : value;
@@ -63,22 +61,6 @@ export default async function ProductsPage({
     skip: (currentPage - 1) * perPage,
     take: perPage,
   });
-
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
-    } else if (currentPage <= 3) {
-      pages.push(1, 2, 3, "...", totalPages);
-    } else if (currentPage >= totalPages - 2) {
-      pages.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
-    } else {
-      pages.push(1, "...", currentPage, "...", totalPages);
-    }
-    return pages;
-  };
-
-  const pageNumbers = getPageNumbers();
 
   return (
     <>
