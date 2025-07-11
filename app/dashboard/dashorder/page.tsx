@@ -167,31 +167,32 @@ const DashOrder = () => {
             </TabsList>
           </Tabs>
 
-          {/* Calendars */}
-          <div className="flex space-x-2 items-center text-sm text-gray-500">
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-              placeholderText="Start date"
-              className="border px-3 py-1 rounded w-[120px]"
-              dateFormat="dd MMM yyyy"
-            />
-            <span>to</span>
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              selectsEnd
-              startDate={startDate ?? undefined}
-              endDate={endDate ?? undefined}
-              minDate={startDate ?? undefined}
-              placeholderText="End date"
-              className="border px-3 py-1 rounded w-[120px]"
-              dateFormat="dd MMM yyyy"
-            />
-          </div>
+         {/* Calendars */}
+<div className="flex space-x-2 items-center text-sm text-gray-500">
+  <DatePicker
+    selected={startDate}
+    onChange={(date: Date | null) => setStartDate(date)}
+    selectsStart
+    startDate={startDate ?? undefined}
+    endDate={endDate ?? undefined}
+    placeholderText="Start date"
+    className="border px-3 py-1 rounded w-[120px]"
+    dateFormat="dd MMM yyyy"
+  />
+  <span>to</span>
+  <DatePicker
+    selected={endDate}
+    onChange={(date: Date | null) => setEndDate(date)}
+    selectsEnd
+    startDate={startDate ?? undefined}
+    endDate={endDate ?? undefined}
+    minDate={startDate ?? undefined}
+    placeholderText="End date"
+    className="border px-3 py-1 rounded w-[120px]"
+    dateFormat="dd MMM yyyy"
+  />
+</div>
+
         </div>
 
         {/* TABLE */}

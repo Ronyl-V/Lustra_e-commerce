@@ -3,9 +3,10 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+// 🔥 Typage compatible avec Next.js App Router
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: any // 👈 solution la plus sûre si erreur persistante
 ) {
   const id = parseInt(context.params.id);
 
