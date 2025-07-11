@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { prisma } from "@/lib/prisma";
@@ -8,7 +11,6 @@ const MOMO_API_USER = process.env.MOMO_API_USER!;
 const MOMO_API_KEY = process.env.MOMO_API_KEY!;
 const MOMO_TARGET_ENV = process.env.MOMO_TARGET_ENV!;
 
-// Même fonction getMomoAccessToken que dans payment
 async function getMomoAccessToken() {
   const res = await axios.post(
     `${MOMO_BASE_URL}/collection/token/`,
@@ -29,13 +31,20 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { referenceId, name, email, phone, cartItems, totalAmount } = body;
 
-    if (!referenceId || !name || !email || !phone || !cartItems || !Array.isArray(cartItems) || !totalAmount) {
+    if (
+      !referenceId ||
+      !name ||
+      !email ||
+      !phone ||
+      !cartItems ||
+      !Array.isArray(cartItems) ||
+      !totalAmount
+    ) {
       return NextResponse.json({ message: "Paramètres manquants ou invalides" }, { status: 400 });
     }
 
     const accessToken = await getMomoAccessToken();
 
-    // Vérifier le statut du paiement
     const res = await axios.get(
       `${MOMO_BASE_URL}/collection/v1_0/requesttopay/${referenceId}`,
       {
@@ -50,7 +59,6 @@ export async function POST(req: Request) {
     const status = res.data.status;
 
     if (status === "SUCCESSFUL") {
-      // Enregistrer la commande dans la base
       const order = await prisma.order.create({
         data: {
           name,

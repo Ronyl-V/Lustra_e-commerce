@@ -13,7 +13,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const fetchProducts = async (params: string) => {
+type Product = {
+  id: string | number;
+  name: string;
+  image?: string;
+  category: string;
+  status: boolean;
+};
+
+const fetchProducts = async (params: string): Promise<Product[]> => {
   const res = await axios.get(`/api/filterdashproducts?${params}`);
   return res.data;
 };
@@ -22,7 +30,7 @@ export default function ProductTable() {
   const searchParams = useSearchParams();
   const paramString = searchParams.toString();
 
-  const { data: products = [], isLoading, isError } = useQuery({
+  const { data: products = [], isLoading, isError } = useQuery<Product[]>({
     queryKey: ["products", paramString],
     queryFn: () => fetchProducts(paramString),
   });
@@ -40,7 +48,7 @@ export default function ProductTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map((product: any) => (
+        {products.map((product: Product) => (
           <TableRow key={product.id}>
             <TableCell className="flex items-center gap-3">
               <Image

@@ -17,9 +17,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  category: string;
+  status: boolean;
+  image?: string | null;
+};
+
 const fetchProducts = async (params: string) => {
   const res = await axios.get(`/api/filterdashproducts?${params}`);
-  return res.data;
+  return res.data as Product[];
 };
 
 export default function DashProductTable() {
@@ -47,7 +57,7 @@ export default function DashProductTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map((product: any) => (
+        {products.map((product: Product) => (
           <TableRow key={product.id}>
             <TableCell className="flex items-center gap-3">
               <Image

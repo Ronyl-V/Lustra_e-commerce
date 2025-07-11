@@ -5,7 +5,6 @@ import Image from 'next/image';
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
-
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
@@ -13,7 +12,6 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
  
-  
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -22,7 +20,7 @@ const Contact = () => {
       'template_2vqhnga',
       formData,
       '_Yq-iqC4vDW4Oy6fz' // Your user ID from EmailJS
-    ).then((result) => {
+    ).then(() => { // ici on enlève "result"
       alert('Message sent successfully!');
     }, (error) => {
       alert('Failed to send message. Please try again.');
@@ -83,7 +81,7 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className='flex items-center justify-centeer gap-8'>
+          <div className='flex items-center justify-center gap-8'>
           <button type="submit" className="w-1/2 cursor-pointer bg-black text-white py-3 rounded-md font-medium hover:bg-gray-800 transition">
             SEND
           </button>

@@ -3,11 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-// 🔥 Typage compatible avec Next.js App Router
-export async function DELETE(
-  req: NextRequest,
-  context: any // 👈 solution la plus sûre si erreur persistante
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function DELETE(req: NextRequest, context: any) {
   const id = parseInt(context.params.id);
 
   if (isNaN(id)) {

@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 const AddProduct = () => {
   const router = useRouter();
@@ -45,23 +46,31 @@ const AddProduct = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (!productId) return setIsLoading(false);
-      const res = await fetch(`/api/modifydashproduct/${productId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setFormData({
-          ...formData,
-          ...data,
-          price: data.price?.toString() || "",
-          comparePrice: data.comparePrice?.toString() || "",
-          quantity: data.quantity?.toString() || "",
-          weight: data.weight?.toString() || "",
-        });
-        setImages(data.image ? [data.image] : []);
-      } else {
-        alert("Erreur de chargement du produit.");
+      if (!productId) {
+        setIsLoading(false);
+        return;
       }
-      setIsLoading(false);
+      try {
+        const res = await fetch(`/api/modifydashproduct/${productId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setFormData((prev) => ({
+            ...prev,
+            ...data,
+            price: data.price?.toString() || "",
+            comparePrice: data.comparePrice?.toString() || "",
+            quantity: data.quantity?.toString() || "",
+            weight: data.weight?.toString() || "",
+          }));
+          setImages(data.image ? [data.image] : []);
+        } else {
+          alert("Erreur de chargement du produit.");
+        }
+      } catch {
+        alert("Erreur réseau lors du chargement.");
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchProduct();
   }, [productId]);
@@ -70,9 +79,7 @@ const AddProduct = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
 
@@ -80,13 +87,13 @@ const AddProduct = () => {
     const uploadedUrls: string[] = [];
 
     for (const file of Array.from(files)) {
-      const formData = new FormData();
-      formData.append("image", file);
+      const formDataImage = new FormData();
+      formDataImage.append("image", file);
 
       try {
         const res = await fetch("/api/upload", {
           method: "POST",
-          body: formData,
+          body: formDataImage,
         });
 
         if (!res.ok) {
@@ -96,7 +103,7 @@ const AddProduct = () => {
 
         const data = await res.json();
         uploadedUrls.push(data.url);
-      } catch (error) {
+      } catch {
         alert("Erreur réseau lors de l'upload");
       }
     }
@@ -142,6 +149,8 @@ const AddProduct = () => {
     }
   };
 
+  if (isLoading) return <p className="p-4 text-center">Chargement du produit...</p>;
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
@@ -156,16 +165,22 @@ const AddProduct = () => {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Add Product</h1>
-              <p className="text-gray-600">Create a new product for your store</p>
+              <h1 className="text-3xl font-bold text-gray-900">{productId ? "Edit Product" : "Add Product"}</h1>
+              <p className="text-gray-600">
+                {productId ? "Modify your product details" : "Create a new product for your store"}
+              </p>
             </div>
           </div>
           <div className="flex space-x-3">
             <Button variant="outline" onClick={() => router.push("/dashboard/dashproducts")}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
-              Save Product
+            <Button
+              onClick={handleSubmit}
+              className="bg-blue-600 hover:bg-blue-700"
+              disabled={uploading}
+            >
+              {uploading ? "Uploading..." : "Save Product"}
             </Button>
           </div>
         </div>
@@ -224,18 +239,21 @@ const AddProduct = () => {
                       type="button"
                       variant="outline"
                       onClick={() => document.getElementById("image-upload")?.click()}
+                      disabled={uploading}
                     >
-                      Choose Files
+                      {uploading ? "Uploading..." : "Choose Files"}
                     </Button>
                   </div>
                   {images.length > 0 && (
                     <div className="grid grid-cols-4 gap-4">
                       {images.map((image, index) => (
                         <div key={index} className="relative">
-                          <img
+                          <Image
                             src={image}
                             alt={`Product ${index + 1}`}
-                            className="w-full h-24 object-cover rounded-lg"
+                            width={200}
+                            height={96}
+                            className="rounded-lg object-cover"
                           />
                           <Button
                             type="button"
@@ -349,7 +367,6 @@ const AddProduct = () => {
                 </div>
               </CardContent>
             </Card>
-
           </div>
         </form>
       </div>
@@ -358,4 +375,3 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
-

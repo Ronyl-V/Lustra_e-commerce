@@ -55,13 +55,16 @@ export async function POST(req: Request) {
         status: "Pending",
         transactionId: "",
         items: {
-          create: cartItems.map((item: any) => ({
-            productId: Number(item.id),
-            name: item.name,
-            image: item.image || "",
-            price: Number(item.price),
-            quantity: Number(item.cartQuantity),
-          })),
+          create: cartItems.map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (item: any) => ({
+              productId: Number(item.id),
+              name: item.name,
+              image: item.image || "",
+              price: Number(item.price),
+              quantity: Number(item.cartQuantity),
+            })
+          ),
         },
       },
     });
@@ -73,7 +76,10 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Erreur enregistrement commande :", error);
     return NextResponse.json(
-      { message: "Erreur serveur", detail: error instanceof Error ? error.message : String(error) },
+      {
+        message: "Erreur serveur",
+        detail: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }

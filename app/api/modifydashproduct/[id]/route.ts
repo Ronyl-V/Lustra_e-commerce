@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 // ✅ GET : récupérer un produit par ID
 export async function GET(
   req: NextRequest,
-  { params }: any // 🔥 LA SEULE signature qui ne fait JAMAIS d'erreur sur Vercel
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { params }: any
 ) {
   try {
     const id = Number(params.id);
@@ -27,7 +28,8 @@ export async function GET(
 // ✅ PUT : modifier un produit par ID
 export async function PUT(
   req: NextRequest,
-  { params }: any // 🔥 pareil ici
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { params }: any
 ) {
   try {
     const id = Number(params.id);

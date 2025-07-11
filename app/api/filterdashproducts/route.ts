@@ -1,3 +1,5 @@
+// app/api/filterdashproducts/route.ts
+
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -11,6 +13,7 @@ export async function GET(req: Request) {
   const sort = searchParams.get("sort"); 
   const search = searchParams.get("search");
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const whereClause: any = {};
 
   if (status === "active") whereClause.status = true;
@@ -26,15 +29,16 @@ export async function GET(req: Request) {
     whereClause.price = { ...whereClause.price, lte: parseFloat(max) };
   }
 
-  //  Ajout de la recherche par nom
+  // Recherche par nom (case-insensitive)
   if (search) {
     whereClause.name = {
       contains: search,
-      mode: "insensitive", // ignore la casse
+      mode: "insensitive",
     };
   }
 
-  let orderByClause: any = { createdAt: "desc" }; // Valeur par défaut
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let orderByClause: any = { createdAt: "desc" };
   if (sort) {
     const [order, field] = sort.split(" ");
     if (

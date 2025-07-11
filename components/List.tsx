@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCart } from "@/context/CartContext";
 import AddToCart from "./AddToCart";
 
 type Product = {
@@ -14,7 +13,7 @@ type Product = {
 };
 
 function List({ products }: { products: Product[] }) {
-  const { addToCart } = useCart();
+  // Removed unused addToCart from useCart to fix lint error
 
   return (
     <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
@@ -48,7 +47,6 @@ function List({ products }: { products: Product[] }) {
           </div>
 
           <div className="rounded-2xl ring-1 ring-lama text-red-400 w-max py-2 px-4 text-xs hover:bg-red-400 hover:text-white">
-            {/* Correction ici : ajout de cartQuantity */}
             <AddToCart product={product} />
           </div>
         </div>

@@ -15,7 +15,7 @@ const ShoppingCartPage = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");   // <-- ici phone au lieu de paymentNumber
+  const [phone, setPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
 
   const totalAmount = cartItems.reduce(
@@ -23,75 +23,74 @@ const ShoppingCartPage = () => {
     0
   );
 
-const handleCheckout = async () => {
-  if (!isSignedIn) {
-    router.push("/sign-in");
-    return;
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const handleCheckout = async () => {
+    if (!isSignedIn) {
+      router.push("/sign-in");
+      return;
+    }
 
-  if (!paymentMethod || !name || !email || !phone) {
-    alert("Veuillez remplir tous les champs.");
-    return;
-  }
+    if (!paymentMethod || !name || !email || !phone) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
 
-  try {
-    // 1. Lancer le paiement
-    const res = await fetch("/api/payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        email,
-        phone,
-        paymentMethod,
-        cartItems,
-        totalAmount: Number(totalAmount),
-      }),
-    });
+    try {
+      // 1. Lancer le paiement
+      const res = await fetch("/api/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          paymentMethod,
+          cartItems,
+          totalAmount: Number(totalAmount),
+        }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
 
-    alert(data.message); // Message : "Un message a été envoyé à votre téléphone"
+      alert(data.message);
 
-    const referenceId = data.referenceId;
-    if (!referenceId) throw new Error("Référence de paiement manquante.");
+      const referenceId = data.referenceId;
+      if (!referenceId) throw new Error("Référence de paiement manquante.");
 
-    // 2. Attendre 10-15 secondes que l'utilisateur entre son code
-    setTimeout(async () => {
-      try {
-        const webhookRes = await fetch("/api/webhook", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            referenceId,
-            name,
-            email,
-            phone,
-            cartItems,
-            totalAmount,
-          }),
-        });
+      // 2. Attendre la confirmation paiement
+      setTimeout(async () => {
+        try {
+          const webhookRes = await fetch("/api/webhook", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              referenceId,
+              name,
+              email,
+              phone,
+              cartItems,
+              totalAmount,
+            }),
+          });
 
-        const webhookData = await webhookRes.json();
-        if (!webhookRes.ok) {
-          alert("Paiement non confirmé : " + webhookData.message);
-        } else {
-          alert("Paiement validé et commande enregistrée !");
-          router.push("/orders"); // ou redirige vers une page de confirmation
+          const webhookData = await webhookRes.json();
+          if (!webhookRes.ok) {
+            alert("Paiement non confirmé : " + webhookData.message);
+          } else {
+            alert("Paiement validé et commande enregistrée !");
+            router.push("/orders");
+          }
+        } catch (err) {
+          console.error("Erreur webhook :", err);
+          alert("Erreur lors de la confirmation du paiement.");
         }
-      } catch (err) {
-        console.error("Erreur webhook :", err);
-        alert("Erreur lors de la confirmation du paiement.");
-      }
-    }, 12000); // attendre 12 secondes
-
-  } catch (err: any) {
-    alert("Erreur lors du paiement : " + err.message);
-  }
-};
-
-
+      }, 12000);
+    } catch (err: any) {
+      alert("Erreur lors du paiement : " + err.message);
+    }
+  };
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   return (
     <>

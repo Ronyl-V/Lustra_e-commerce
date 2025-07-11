@@ -14,7 +14,7 @@ export async function PATCH(req: Request) {
       data: { status: newStatus },
     });
     return NextResponse.json({ message: "Status updated", order: updatedOrder });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }

@@ -47,8 +47,12 @@ const AdminPage = () => {
       } else {
         alert("Incorrect email or password.");
       }
-    } catch (err: any) {
-      alert("Erreur lors de la connexion: " + err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        alert("Erreur lors de la connexion: " + err.message);
+      } else {
+        alert("Une erreur inconnue est survenue.");
+      }
     }
   };
 
@@ -60,7 +64,7 @@ const AdminPage = () => {
             <Sunburst className="h-10 w-10" />
           </div>
           <h2 className="text-3xl font-medium mb-2 tracking-tight">Get Started</h2>
-          <p className="text-left opacity-80">Welcome to Lustra — Let's get started!</p>
+          <p className="text-left opacity-80">Welcome to Lustra — {"Let\u2019s get started!"}</p>
         </div>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>

@@ -11,8 +11,23 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+type Metrics = {
+  totalRevenue?: number;
+  revenueChange?: number;
+  revenueTrend?: "up" | "down";
+  activeUsers?: number;
+  usersChange?: number;
+  usersTrend?: "up" | "down";
+  totalSales?: number;
+  salesChange?: number;
+  salesTrend?: "up" | "down";
+  conversionRate?: number | string;
+  conversionChange?: number;
+  conversionTrend?: "up" | "down";
+};
+
 export const MetricsCards = () => {
-  const [metrics, setMetrics] = useState<any>(null);
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
 
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -31,43 +46,42 @@ export const MetricsCards = () => {
   if (!metrics) return <p>Chargement des données…</p>;
 
   const metricsData = [
-   {
-    title: "Total Revenue",
-    value: `FCFA ${metrics.totalRevenue?.toLocaleString() ?? "0"}`,
-    change: `${metrics.revenueChange ?? 0}%`,
-    trend: metrics.revenueTrend ?? "up",
-    icon: DollarSignIcon,
-    color: "text-green-600",
-    bgColor: "bg-green-50",
-  },
-  {
-    title: "Active Users",
-    value: metrics.activeUsers ?? 0,
-    change: `${metrics.usersChange ?? 0}%`,
-    trend: metrics.usersTrend ?? "up",
-    icon: UsersIcon,
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-  },
+    {
+      title: "Total Revenue",
+      value: `FCFA ${metrics.totalRevenue?.toLocaleString() ?? "0"}`,
+      change: `${metrics.revenueChange ?? 0}%`,
+      trend: metrics.revenueTrend ?? "up",
+      icon: DollarSignIcon,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+    },
+    {
+      title: "Active Users",
+      value: metrics.activeUsers ?? 0,
+      change: `${metrics.usersChange ?? 0}%`,
+      trend: metrics.usersTrend ?? "up",
+      icon: UsersIcon,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+    },
     {
       title: "Sales",
       value: metrics.totalSales,
-      change: `${metrics.salesChange}%`,
-      trend: metrics.salesTrend,
+      change: `${metrics.salesChange ?? 0}%`,
+      trend: metrics.salesTrend ?? "up",
       icon: ShoppingCartIcon,
       color: "text-purple-600",
       bgColor: "bg-purple-50",
     },
     {
-  title: "Conversion Rate",
-  value: metrics.conversionRate,
-  change: `${metrics.conversionChange}%`,
-  trend: metrics.conversionTrend,
-  icon: BarChart3Icon,
-  color: "text-orange-600",
-  bgColor: "bg-orange-50",
-},
-
+      title: "Conversion Rate",
+      value: metrics.conversionRate,
+      change: `${metrics.conversionChange ?? 0}%`,
+      trend: metrics.conversionTrend ?? "up",
+      icon: BarChart3Icon,
+      color: "text-orange-600",
+      bgColor: "bg-orange-50",
+    },
   ];
 
   return (
@@ -76,7 +90,10 @@ export const MetricsCards = () => {
         const Icon = metric.icon;
         const isUp = metric.trend === "up";
         return (
-          <Card key={index} className="transition-all duration-200 hover:shadow-lg border-0 shadow-md">
+          <Card
+            key={index}
+            className="transition-all duration-200 hover:shadow-lg border-0 shadow-md"
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">
                 {metric.title}

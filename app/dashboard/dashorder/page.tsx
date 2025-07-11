@@ -51,9 +51,11 @@ const DashOrder = () => {
   useEffect(() => {
     fetch("/api/get-orders")
       .then((res) => res.json())
-      .then((data) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .then((data: any[]) => {
         if (!Array.isArray(data)) return;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const formatted = data.map((order: any) => ({
           id: "#" + order.id,
           name: order.name,
@@ -67,6 +69,7 @@ const DashOrder = () => {
           price: `${order.total}FCFA`,
           status: order.status,
           statusColor: statusToColor(order.status),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           products: order.items.map((i: any) => ({
             id: i.productId,
             name: i.name,
@@ -76,7 +79,9 @@ const DashOrder = () => {
 
         setOrders(formatted);
       })
-      .catch(console.error);
+      .catch((_error) => {
+        console.error(_error);
+      });
   }, []);
 
   useEffect(() => {
@@ -135,7 +140,7 @@ const DashOrder = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar fixe */}
-        <SideBar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+      <SideBar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
 
       {/* Contenu principal */}
       <div className="flex-1">
@@ -167,32 +172,31 @@ const DashOrder = () => {
             </TabsList>
           </Tabs>
 
-         {/* Calendars */}
-<div className="flex space-x-2 items-center text-sm text-gray-500">
-  <DatePicker
-    selected={startDate}
-    onChange={(date: Date | null) => setStartDate(date)}
-    selectsStart
-    startDate={startDate ?? undefined}
-    endDate={endDate ?? undefined}
-    placeholderText="Start date"
-    className="border px-3 py-1 rounded w-[120px]"
-    dateFormat="dd MMM yyyy"
-  />
-  <span>to</span>
-  <DatePicker
-    selected={endDate}
-    onChange={(date: Date | null) => setEndDate(date)}
-    selectsEnd
-    startDate={startDate ?? undefined}
-    endDate={endDate ?? undefined}
-    minDate={startDate ?? undefined}
-    placeholderText="End date"
-    className="border px-3 py-1 rounded w-[120px]"
-    dateFormat="dd MMM yyyy"
-  />
-</div>
-
+          {/* Calendars */}
+          <div className="flex space-x-2 items-center text-sm text-gray-500">
+            <DatePicker
+              selected={startDate}
+              onChange={(date: Date | null) => setStartDate(date)}
+              selectsStart
+              startDate={startDate ?? undefined}
+              endDate={endDate ?? undefined}
+              placeholderText="Start date"
+              className="border px-3 py-1 rounded w-[120px]"
+              dateFormat="dd MMM yyyy"
+            />
+            <span>to</span>
+            <DatePicker
+              selected={endDate}
+              onChange={(date: Date | null) => setEndDate(date)}
+              selectsEnd
+              startDate={startDate ?? undefined}
+              endDate={endDate ?? undefined}
+              minDate={startDate ?? undefined}
+              placeholderText="End date"
+              className="border px-3 py-1 rounded w-[120px]"
+              dateFormat="dd MMM yyyy"
+            />
+          </div>
         </div>
 
         {/* TABLE */}
@@ -218,7 +222,7 @@ const DashOrder = () => {
                 >
                   <td className="p-3">{order.id}</td>
                   <td className="p-3 flex items-center space-x-2">
-                    <img src={order.avatar} className="h-6 w-6 rounded-full" />
+                    <img src={order.avatar} className="h-6 w-6 rounded-full" alt={order.name} />
                     <span>{order.name}</span>
                   </td>
                   <td className="p-3">{order.email}</td>
@@ -257,6 +261,7 @@ const DashOrder = () => {
               <button
                 onClick={() => setSelectedOrder(null)}
                 className="absolute top-3 right-3"
+                aria-label="Close modal"
               >
                 <X className="h-5 w-5 text-gray-500" />
               </button>

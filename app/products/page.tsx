@@ -35,6 +35,7 @@ export default async function ProductsPage({
 
   const perPage = 8;
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const whereClause: any = {};
   if (category) whereClause.category = category;
   if (min !== undefined) whereClause.price = { ...whereClause.price, gte: min };
@@ -51,6 +52,7 @@ export default async function ProductsPage({
       orderByClause = { [field]: direction };
     }
   }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const totalProducts = await prisma.product.count({ where: whereClause });
   const totalPages = Math.ceil(totalProducts / perPage);
@@ -69,13 +71,7 @@ export default async function ProductsPage({
     } else if (currentPage <= 3) {
       pages.push(1, 2, 3, "...", totalPages);
     } else if (currentPage >= totalPages - 2) {
-      pages.push(
-        1,
-        "...",
-        totalPages - 2,
-        totalPages - 1,
-        totalPages
-      );
+      pages.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
     } else {
       pages.push(1, "...", currentPage, "...", totalPages);
     }
@@ -100,12 +96,7 @@ export default async function ProductsPage({
             </button>
           </div>
           <div className="relative w-1/3">
-            <Image
-              src="/woman.png"
-              alt=""
-              fill
-              className="object-contain"
-            />
+            <Image src="/woman.png" alt="" fill className="object-contain" />
           </div>
         </div>
 
@@ -135,23 +126,6 @@ export default async function ProductsPage({
           >
             <ArrowLeftIcon className="w-4 h-4" />
           </Link>
-
-          {/* Numéros de page */}
-          {pageNumbers.map((page, index) => (
-            <Link
-              key={index}
-              href={`?page=${page}`}
-              className={`px-4 py-2 rounded-full text-sm ${
-                page === currentPage
-                  ? "bg-black text-white"
-                  : page === "..."
-                  ? "cursor-default text-gray-500"
-                  : "bg-gray-100 hover:bg-gray-300"
-              }`}
-            >
-              {page}
-            </Link>
-          ))}
 
           {/* Page suivante */}
           <Link

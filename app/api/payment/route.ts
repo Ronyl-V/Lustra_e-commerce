@@ -40,7 +40,9 @@ function formatPhoneNumber(phone: string) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, phone, paymentMethod, cartItems, totalAmount } = body;
+    // Variables inutilisées commentées pour éviter l'erreur no-unused-vars
+    // const { name, email, phone, paymentMethod, cartItems, totalAmount } = body;
+    const { phone, paymentMethod, totalAmount } = body;
 
     if (!phone || !totalAmount || paymentMethod !== "momo") {
       return NextResponse.json({ message: "Paramètres invalides" }, { status: 400 });
@@ -65,7 +67,7 @@ export async function POST(req: Request) {
       `${MOMO_BASE_URL}/collection/v1_0/requesttopay`,
       {
         amount: eurAmount,
-        currency: "EUR", // ← c’est ici qu’on utilise EUR
+        currency: "EUR",
         externalId: referenceId,
         payer: {
           partyIdType: "MSISDN",
@@ -81,7 +83,10 @@ export async function POST(req: Request) {
       message: `Une demande de paiement a été envoyée à ${phone}.`,
       referenceId,
     });
-  } catch (error: any) {
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
     if (axios.isAxiosError(error)) {
       console.error("Erreur MoMo response data:", error.response?.data);
       console.error("Erreur MoMo status:", error.response?.status);

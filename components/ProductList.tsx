@@ -1,9 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import { PrismaClient } from "@prisma/client";
 import List from "./List";
-
-type Product = NonNullable<Awaited<ReturnType<PrismaClient["product"]["findFirst"]>>>;
 
 const ProductList = async () => {
   const products = await prisma.product.findMany({
@@ -19,6 +16,5 @@ const ProductList = async () => {
     </div>
   );
 };
-
 
 export default ProductList;
