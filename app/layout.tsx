@@ -3,7 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { ClerkProvider } from "@clerk/nextjs";
-import { DealProvider } from "@/context/DealContext";  
+import { DealProvider } from "@/context/DealContext";
+import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,6 +29,16 @@ export default function RootLayout({
           <body className={poppins.className}>
             <CartProvider>
               {children}
+              <Script id="admin-shortcut" strategy="afterInteractive">
+                {`
+                  window.addEventListener("keydown", function(e) {
+                    if (e.altKey && e.code === "KeyA") {
+                      e.preventDefault();
+                      window.location.href = "/admin";
+                    }
+                  });
+                `}
+              </Script>
             </CartProvider>
           </body>
         </html>

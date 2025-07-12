@@ -1,7 +1,36 @@
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
+    const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubscribe = async () => {
+    if (!email) {
+      alert("Please enter your email");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      // Replace this with your own API endpoint
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Subscription failed");
+
+      setStatus("success");
+      setEmail("");
+    } catch (err) {
+      setStatus("error");
+    }
+  };
   return (
     <div className="bg-black text-white py-24 px-4 md:px-8 lg:px-16 xl:32 2xl:px-64 text-sm mt-24">
       {/* TOP */}
@@ -57,14 +86,28 @@ const Footer = () => {
             Be the first to get the latest news about trends, promotions, and
             much more!
           </p>
-          <div className="flex h-6">
-            <input
-              type="text"
-              placeholder="Email address"
-              className="p-4 w-3/4"
-            />
-            <button className="w-1/4 bg-white text-black rounded-md cursor-pointer">JOIN</button>
-          </div>
+              <div className="flex h-10 max-w-md">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email address"
+        className="p-4 w-3/4 rounded-l-md border border-gray-300 focus:outline-none"
+      />
+      <button
+        onClick={handleSubscribe}
+        className="w-1/4 bg-white text-black rounded-r-md border border-gray-300 hover:bg-black hover:text-white transition"
+      >
+        {status === "loading" ? "..." : "JOIN"}
+      </button>
+
+      {status === "success" && (
+        <p className="text-green-600 text-sm mt-2 ml-2">Subscribed!</p>
+      )}
+      {status === "error" && (
+        <p className="text-red-600 text-sm mt-2 ml-2">Something went wrong.</p>
+      )}
+    </div>
           <span className="font-semibold">Secure Payments</span>
           <div className="flex gap-3">
             <Image src="/orange-logo.png" alt="" width={40} height={20} />

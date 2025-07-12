@@ -2,6 +2,7 @@
 
 import { createContext, useContext, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { Slot } from "@radix-ui/react-slot"; // ✅ Import nécessaire
 
 const SidebarContext = createContext<{ state: "expanded" | "collapsed" }>({ state: "expanded" });
 
@@ -22,28 +23,32 @@ export const SidebarFooter = ({ className = "", children }: { className?: string
 );
 
 export const SidebarGroup = ({ children }: { children: ReactNode }) => <div>{children}</div>;
+
 export const SidebarGroupContent = ({ children }: { children: ReactNode }) => <div>{children}</div>;
 
 export const SidebarMenu = ({ children }: { children: ReactNode }) => <ul className="space-y-1">{children}</ul>;
 
 export const SidebarMenuItem = ({ children }: { children: ReactNode }) => <li>{children}</li>;
 
-export const SidebarMenuButton = ({
-  children,
-  isActive,
-}: {
+/* ✅ Composant corrigé avec support de asChild */
+type SidebarMenuButtonProps = {
   children: ReactNode;
   isActive?: boolean;
-}) => {
+  asChild?: boolean;
+};
+
+export const SidebarMenuButton = ({ children, isActive, asChild = false }: SidebarMenuButtonProps) => {
+  const Comp = asChild ? Slot : "div";
+
   return (
-    <div
+    <Comp
       className={cn(
         "cursor-pointer px-3 py-2 rounded-lg text-sm hover:bg-gray-100 transition",
         isActive ? "bg-gray-100 text-gray-900 font-semibold" : "text-gray-700"
       )}
     >
       {children}
-    </div>
+    </Comp>
   );
 };
 

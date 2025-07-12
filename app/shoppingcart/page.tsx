@@ -96,92 +96,146 @@ const ShoppingCartPage = () => {
     <>
       <NavBar />
       <div className="flex flex-row flex-wrap w-full min-h-screen bg-white mt-30 justify-center items-start gap-4 px-4">
-        {/* LEFT - CART */}
-        <div className="w-[60%] bg-white flex flex-col items-center">
-          <div className="text-2xl font-bold mb-6">Shopping Cart</div>
+       {/* LEFT - CART */}
+<div className="w-full lg:w-[60%] bg-white flex flex-col items-center">
+  <div className="text-2xl font-bold mb-6">Shopping Cart</div>
 
-          <div
-            className="grid w-full px-6 py-2 font-semibold text-sm text-gray-600 border-b border-gray-300"
-            style={{ gridTemplateColumns: "3fr 1fr 1fr 1fr 1fr" }}
-          >
-            <div>Product</div>
-            <div className="text-center">Price</div>
-            <div className="text-center">Quantity</div>
-            <div className="text-center">Total</div>
-            <div className="text-center">Action</div>
-          </div>
+  {/* Table Header - Visible sur grand écran */}
+  <div
+    className="hidden lg:grid w-full px-6 py-2 font-semibold text-sm text-gray-600 border-b border-gray-300"
+    style={{ gridTemplateColumns: "3fr 1fr 1fr 1fr 1fr" }}
+  >
+    <div>Product</div>
+    <div className="text-center">Price</div>
+    <div className="text-center">Quantity</div>
+    <div className="text-center">Total</div>
+    <div className="text-center">Action</div>
+  </div>
 
-          {cartItems.length === 0 ? (
-            <div className="text-gray-500 mt-8">Your cart is empty.</div>
-          ) : (
-            cartItems.map((product) => (
-              <div
-                key={product.id}
-                className="grid w-full px-6 py-4 items-center border-b border-gray-200"
-                style={{ gridTemplateColumns: "3fr 1fr 1fr 1fr 1fr" }}
-              >
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={product.image || "/default.jpg"}
-                    alt={product.name}
-                    width={70}
-                    height={70}
-                    className="rounded"
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-medium">{product.name}</span>
-                  </div>
-                </div>
-
-                <div className="text-center font-semibold text-[12px]">
-                  FCFA {product.price}
-                </div>
-
-                <div className="flex justify-center items-center gap-2">
-                  <button
-                    onClick={() => decreaseQuantity(product.id)}
-                    className="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
-                  >
-                    −
-                  </button>
-                  <span className="px-2">{product.cartQuantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(product.id)}
-                    className="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <div className="text-center font-semibold text-[12px]">
-                  FCFA {product.price * product.cartQuantity}
-                </div>
-
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => removeFromCart(product.id)}
-                    className="cursor-pointer text-red-500 border border-red-400 text-xs px-4 py-1 rounded-full hover:bg-red-500 hover:text-white transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-
-          <div className="mt-10 w-full px-6 py-4 flex justify-between items-center">
-            <Link
-              href="/products"
-              className="cursor-pointer text-black border border-gray-300 text-xs px-8 py-2 font-bold rounded-full hover:bg-black hover:text-white transition"
-            >
-              Continue Shopping
-            </Link>
-
-            <div className="text-2xl font-bold">
-              Total: <span className="text-lg font-semi-bold">FCFA {totalAmount}</span>
+  {cartItems.length === 0 ? (
+    <div className="text-gray-500 mt-8">Your cart is empty.</div>
+  ) : (
+    cartItems.map((product) => (
+      <div
+        key={product.id}
+        className="w-full border-b border-gray-200 px-4 py-4"
+      >
+        {/* Desktop view */}
+        <div
+          className="hidden lg:grid items-center"
+          style={{ gridTemplateColumns: "3fr 1fr 1fr 1fr 1fr" }}
+        >
+          <div className="flex items-center gap-4">
+            <Image
+              src={product.image || "/default.jpg"}
+              alt={product.name}
+              width={70}
+              height={70}
+              className="rounded"
+            />
+            <div className="flex flex-col">
+              <span className="font-medium">{product.name}</span>
             </div>
           </div>
+          <div className="text-center font-semibold text-sm">
+            FCFA {product.price}
+          </div>
+          <div className="flex justify-center items-center gap-2">
+            <button
+              onClick={() => decreaseQuantity(product.id)}
+              className="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            >
+              −
+            </button>
+            <span className="px-2">{product.cartQuantity}</span>
+            <button
+              onClick={() => increaseQuantity(product.id)}
+              className="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            >
+              +
+            </button>
+          </div>
+          <div className="text-center font-semibold text-sm">
+            FCFA {product.price * product.cartQuantity}
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={() => removeFromCart(product.id)}
+              className="text-red-500 border border-red-400 text-xs px-4 py-1 rounded-full hover:bg-red-500 hover:text-white transition"
+            >
+              Remove
+            </button>
+          </div>
         </div>
+
+        {/* Mobile / Tablet card style */}
+        <div className="lg:hidden flex flex-col gap-2 rounded-lg bg-gray-50 p-4 shadow-sm">
+          <div className="flex gap-3 items-center">
+            <Image
+              src={product.image || "/default.jpg"}
+              alt={product.name}
+              width={60}
+              height={60}
+              className="rounded"
+            />
+            <div>
+              <p className="font-semibold text-gray-900">{product.name}</p>
+              <p className="text-sm text-gray-600">FCFA {product.price}</p>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mt-2">
+            <div className="text-sm text-gray-700">
+              Total:{" "}
+              <span className="font-bold">
+                FCFA {product.price * product.cartQuantity}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => decreaseQuantity(product.id)}
+                className="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+              >
+                −
+              </button>
+              <span>{product.cartQuantity}</span>
+              <button
+                onClick={() => increaseQuantity(product.id)}
+                className="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <button
+              onClick={() => removeFromCart(product.id)}
+              className="text-red-500 border border-red-400 text-xs px-4 py-1 rounded-full hover:bg-red-500 hover:text-white transition mt-2"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    ))
+  )}
+
+  {/* Footer (Total + lien) */}
+  <div className="mt-8 w-full px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <Link
+      href="/products"
+      className="text-black border border-gray-300 text-xs px-6 py-2 font-bold rounded-full hover:bg-black hover:text-white transition"
+    >
+      Continue Shopping
+    </Link>
+
+    <div className="text-lg sm:text-xl font-bold">
+      Total: <span className="text-base font-semibold">FCFA {totalAmount}</span>
+    </div>
+  </div>
+</div>
+
 
         {/* RIGHT - PAYMENT INFO */}
         <div className="h-full bg-white border border-gray-200 rounded-xl p-6 shadow-md">

@@ -1,8 +1,8 @@
 "use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 
@@ -28,18 +28,15 @@ const NavIcons = () => {
         onClick={handleProfile}
       />
 
-      {/* Conditional Dropdown */}
       {isProfileOpen && isLoaded && (
         <div className="absolute top-12 right-0 w-40 bg-white rounded-lg shadow-lg z-20 border border-gray-200">
           <div className="flex flex-col p-3 text-sm text-gray-700">
             {isSignedIn ? (
               <>
-                {/* Email */}
                 <span className="px-3 py-1 mb-2 font-semibold text-xs text-gray-500">
                   {user.emailAddresses[0]?.emailAddress}
                 </span>
 
-                {/* Sign Out */}
                 <SignOutButton>
                   <button className="mt-2 py-2 px-3 text-left rounded-md hover:bg-red-100 text-red-500 transition-colors">
                     Sign Out
@@ -48,15 +45,6 @@ const NavIcons = () => {
               </>
             ) : (
               <>
-                {/* Admin Link (even when signed out) */}
-                <Link
-                  href="/admin"
-                  className="py-2 px-3 text-center rounded-md hover:bg-gray-100 transition-colors"
-                >
-                  Admin
-                </Link>
-
-                {/* Sign In */}
                 <SignInButton>
                   <button className="mt-2 py-2 px-3 text-center rounded-md border hover:bg-gray-100 transition">
                     Sign In
