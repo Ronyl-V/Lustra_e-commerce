@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
+import { isMobileRequest } from "@/lib/isMobile";
+import MobileSearchBar from "@/components/MobileSearchBar";
 
 export const dynamic = "force-dynamic";
 
@@ -31,9 +33,11 @@ export default async function ProductsPage({
   const sort = getParam("sort");
   const search = getParam("search");
 
-  const perPage = 8;
+  const userAgent = typeof window === "undefined" ? undefined : navigator.userAgent;
+  const isMobile = isMobileRequest(userAgent);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const perPage = isMobile ? 2 : 8;
+
   const whereClause: any = {};
   if (category) whereClause.category = category;
   if (min !== undefined) whereClause.price = { ...whereClause.price, gte: min };
@@ -50,7 +54,6 @@ export default async function ProductsPage({
       orderByClause = { [field]: direction };
     }
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const totalProducts = await prisma.product.count({ where: whereClause });
   const totalPages = Math.ceil(totalProducts / perPage);
@@ -65,8 +68,10 @@ export default async function ProductsPage({
   return (
     <>
       <NavBar />
+
       <div className="py-4 px-4 mt-22 md:px-8 lg:px-16 xl:px-32 2xl:px-64 relative">
-        <div className="hidden bg-red-50 px-4 sm:flex justify-between h-64">
+        {/* Bannière uniquement sur md+ */}
+        <div className="hidden md:flex bg-red-50 px-4 justify-between h-64">
           <div className="w-2/3 flex flex-col items-center justify-center gap-8">
             <h1 className="text-4xl font-semibold leading-[48px] text-gray-700">
               Grab up to 50% off on
@@ -82,9 +87,13 @@ export default async function ProductsPage({
           </div>
         </div>
 
+        {/* 🟢 Barre de recherche mobile only */}
+        <MobileSearchBar />
+
         <Filter />
 
-        <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
+        {/* Affichage des produits */}
+        <div className="mt-12 flex gap-x-4 gap-y-12 justify-between flex-wrap">
           {products.length === 0 ? (
             <p className="text-gray-500 text-sm">No products found.</p>
           ) : (
@@ -94,7 +103,7 @@ export default async function ProductsPage({
           )}
         </div>
 
-        {/* Pagination */}
+        {/* 🔻 Pagination visible mobile et desktop */}
         <div className="flex justify-center mt-9 items-center gap-2 flex-wrap">
           {/* Page précédente */}
           <Link
@@ -104,7 +113,6 @@ export default async function ProductsPage({
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                 : "bg-black text-white hover:bg-gray-800"
             }`}
-            aria-disabled={currentPage === 1}
           >
             <ArrowLeftIcon className="w-4 h-4" />
           </Link>
@@ -117,12 +125,12 @@ export default async function ProductsPage({
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                 : "bg-black text-white hover:bg-gray-800"
             }`}
-            aria-disabled={currentPage === totalPages}
           >
             <ArrowRightIcon className="w-4 h-4" />
           </Link>
         </div>
       </div>
+
       <Footer />
     </>
   );

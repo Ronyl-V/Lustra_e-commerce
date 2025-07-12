@@ -25,24 +25,35 @@ const DealPage: React.FC = () => {
     setDealStarted(false);
   };
 
-  const handlePublish = () => {
-    const now = new Date();
-    const endDate = new Date(now);
-    endDate.setDate(now.getDate() + dealDuration.days);
-    endDate.setHours(now.getHours() + dealDuration.hours);
-    endDate.setMinutes(now.getMinutes() + dealDuration.minutes);
-    endDate.setSeconds(59);
-    endDate.setMilliseconds(999);
+ const handlePublish = async () => {
+  const now = new Date();
+  const end = new Date(now);
+  end.setDate(now.getDate() + dealDuration.days);
+  end.setHours(now.getHours() + dealDuration.hours);
+  end.setMinutes(now.getMinutes() + dealDuration.minutes);
+  end.setSeconds(59);
 
-    publishDeal({
-      images,
-      name: productName,
-      description: productDescription,
-      endDate,
-    });
-    alert("Deal published!");
-    router.push("/"); 
+  const payload = {
+    name: productName,
+    description: productDescription,
+    images,
+    endDate: end.toISOString(),
   };
+
+  const res = await fetch("/api/deal", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (res.ok) {
+    alert("Deal publié !");
+    router.push("/");
+  } else {
+    alert("Erreur lors de la publication");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 py-8 px-4">

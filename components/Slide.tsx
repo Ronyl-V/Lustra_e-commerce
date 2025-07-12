@@ -6,9 +6,9 @@ import DealOftheDay from './DealOftheDay'
 
 const Slide = () => {
   return (
-    <>
+  <>
     <div className='w-screen max-h-screen flex items-center justify-center mt-26 pt-1 py-12 px-8 md:px-8 lg:px-16 xl:px-32 2xl:px-64'>
-     <div className='w-full sm:w-4/5 md:w-2/3 px-4 sm:px-6 flex flex-col items-center md:items-start justify-center text-center md:text-left'>
+     <div className='w-full sm:w-4/5 md:w-2/3 px-4 md:text-left flex flex-col items-center md:items-start space-y-4'>
 
   <div className='text-2xl font-bold'>
     <span className='text-red-400'>Lustra</span> - Naturally Luminous, Naturally You
@@ -19,20 +19,20 @@ const Slide = () => {
     line enhances your complexion with pure, potent ingredients — while honoring our commitment to preserving the Earth.
   </div>
 
-  <div className='flex flex-col sm:flex-row gap-4 sm:gap-8 mt-6 items-center sm:items-start'>
-    <Link href="/products">
-      <button className='bg-black text-white rounded-full px-4 py-2 text-[10px] sm:text-sm cursor-pointer'>
-        See Products
-      </button>
-    </Link>
-    <Link href="/contact">
-      <button className='ring-1 ring-gray-300 rounded-full px-4 py-2 text-[10px] sm:text-sm cursor-pointer'>
-        Contact Us
-      </button>
-    </Link>
-  </div>
+  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 w-full sm:w-auto items-center sm:items-start">
+      <Link href="/products" className="w-full sm:w-auto">
+        <button className="bg-black text-white rounded-full w-full sm:w-auto px-6 py-2 text-sm font-medium hover:bg-gray-800 transition">
+          See Products
+        </button>
+      </Link>
+      <Link href="/contact" className="w-full sm:w-auto">
+        <button className="ring-1 ring-gray-300 text-gray-700 rounded-full w-full sm:w-auto px-6 py-2 text-sm font-medium hover:bg-gray-100 transition">
+          Contact Us
+        </button>
+      </Link>
+    </div>
 
-</div>
+    </div>
 
       <div className='hidden md:block h-full flex items-center justify-center'
      style={{width: 'min(450px, 50vw)'}}>

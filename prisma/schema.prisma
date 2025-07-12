@@ -30,7 +30,7 @@ model Order {
   paymentMethod String            // méthode de paiement (Orange, Momo...)
   total         Float
   status        String   @default("Pending")
-  transactionId String @unique
+  transactionId String @default("UNKNOWN")
   createdAt     DateTime @default(now())
   items         Item[]   @relation("OrderItems")
 }
@@ -44,5 +44,14 @@ model Item {
   quantity  Int
   orderId   String
   order     Order   @relation("OrderItems", fields: [orderId], references: [id])
+}
+
+model Deal {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  images      String[]
+  endDate     DateTime
+  createdAt   DateTime @default(now())
 }
 
